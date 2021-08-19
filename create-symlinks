@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+ln -sf init.el ~/.doom.d/init.el
+ln -sf packages.el ~/.doom.d/packages.el
+ln -sf config.el ~/.doom.d/config.el
