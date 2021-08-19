@@ -2,6 +2,8 @@
 
 set -Eeuo pipefail
 
-ln -sf init.el ~/.doom.d/init.el
-ln -sf packages.el ~/.doom.d/packages.el
-ln -sf config.el ~/.doom.d/config.el
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+ln -sf "$script_dir"/init.el ~/.doom.d/init.el
+ln -sf "$script_dir"/packages.el ~/.doom.d/packages.el
+ln -sf "$script_dir"/config.el ~/.doom.d/config.el
