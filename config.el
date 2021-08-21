@@ -118,6 +118,19 @@
          "* %U %?" :heading "Changelog" :prepend t)
         ))
 
+(defun erich/org-to-clipboard-as-markdown ()
+  "Export marked org text to Markdown and put it in clipboard.
+
+I found this somewhere but cannot locate the source now."
+  ;; TODO: don't convert unicode chars to ascii
+  (interactive)
+  ;; TODO: fix unused variable warning
+  (save-window-excursion (let ((org-export-with-toc nil))
+                           (with-current-buffer (org-md-export-as-markdown)
+                             (with-no-warnings (mark-whole-buffer))
+                             (clipboard-kill-region (point-min) (point-max))
+                             (kill-buffer-and-window)))))
+
 ;; org-roam
 (setq org-roam-directory (file-truename "~/org-roam"))
 
@@ -150,8 +163,7 @@
 ;; layout
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ; start maximized
 
-(defun erich/split-windows
-    ()
+(defun erich/split-windows ()
   "Splits windows my way.
 => https://www.simplify.ba/articles/2016/01/25/display-buffer-alist/"
   (interactive)
@@ -181,8 +193,7 @@
 
 ;; editing
 
-(defun erich/snake-case
-  ()
+(defun erich/snake-case ()
   "Snake-case current region."
   (interactive)
   (if (use-region-p)
@@ -192,8 +203,7 @@
                (setq kill-ring-yank-pointer kill-ring)))
     (message "No region marked")))
 
-(defun erich/kebab-case
-  ()
+(defun erich/kebab-case ()
   "Kebab-case current region."
   (interactive)
   (if (use-region-p)
@@ -203,8 +213,7 @@
                (setq kill-ring-yank-pointer kill-ring)))
     (message "No region marked")))
 
-(defun erich/upper-camel-case
-  ()
+(defun erich/upper-camel-case ()
   "Upper-camel-case current region."
   (interactive)
   (if (use-region-p)
@@ -214,8 +223,7 @@
                (setq kill-ring-yank-pointer kill-ring)))
     (message "No region marked")))
 
-(defun erich/lower-camel-case
-  ()
+(defun erich/lower-camel-case ()
   "Lower-camel-case current region."
   (interactive)
   (if (use-region-p)
@@ -227,8 +235,7 @@
 
 ;; blog commands
 
-(defun erich/blog-post-create
-    ()
+(defun erich/blog-post-create ()
   "Creates a new empty blog post."
   (interactive)
   (let ((root-dir (projectile-project-root)))
@@ -236,7 +243,8 @@
         (let ((title (read-string "Post title: "))
               (date (read-string "Date (yyyy-mm-dd): ")))
           (let ((file-path
-                 (concat root-dir "posts/" (s-dashed-words (s-replace "'" "" title)) ".md")))
+                 (concat root-dir "posts/"
+                         (s-dashed-words (s-replace "'" "" title)) ".md")))
             (progn (write-region (concat
                                   "---\n"
                                   "layout: layouts/post.njk\n"
@@ -251,8 +259,7 @@
                    (message "Done!"))))
       (message "Not in /blog directory."))))
 
-(defun erich/blog-post-fix-urls
-    ()
+(defun erich/blog-post-fix-urls ()
   "Fixes all URLs, both to the blog itself & to images (points them to the /img
 dir) in a blog post."
   (interactive)
