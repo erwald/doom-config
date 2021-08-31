@@ -15,17 +15,15 @@
 ;; email
 (set-email-account!
  "gmail"
- '((mu4e-sent-folder       . "/[Gmail].Sent Mail")
-   (mu4e-drafts-folder     . "/[Gmail].Starred")
-   (mu4e-trash-folder      . "/[Gmail].Bin")
-   (mu4e-refile-folder     . "/INBOX")
+ '((mu4e-sent-folder       . "/[Gmail]/Sent Mail")
+   (mu4e-trash-folder      . "/[Gmail]/Bin")
    (smtpmail-smtp-user     . "erichgrunewald@gmail.com"))
  t)
-(setq mu4e-get-mail-command "mbsync gmail")
-(setq mu4e-compose-format-flowed t)
-;; don't need to run cleanup after indexing for gmail
-(setq mu4e-index-cleanup nil
-      mu4e-index-lazy-check t)
+(setq  mu4e-get-mail-command "mbsync gmail"
+       mu4e-compose-format-flowed t
+       ;; don't need to run cleanup after indexing for gmail
+       mu4e-index-cleanup nil
+       mu4e-index-lazy-check t)
 ;; this fixes some macos keychain issue.
 ;; => https://github.com/zzamboni/dot-doom/blob/master/doom.org
 (after! auth-source (setq auth-sources (nreverse auth-sources)))
