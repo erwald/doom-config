@@ -159,7 +159,7 @@ I found this somewhere but cannot locate the source now."
 (map! "C-i" 'other-window) ; select next window in cyclic ordering
 
 ;; lisp editing
-(map! (:prefix "C-m"
+(map! :prefix "C-§"
        "k" 'sp-kill-sexp
        "b f" 'sp-forward-barf-sexp
        "b b" 'sp-backward-barf-sexp
@@ -170,7 +170,7 @@ I found this somewhere but cannot locate the source now."
        "s" 'sp-split-sexp
        "j" 'sp-join-sexp
        "w r" 'sp-wrap-round
-       "w c" 'sp-wrap-curly))
+       "w c" 'sp-wrap-curly)
 
 (defun erich/split-windows ()
   "Splits windows my way.
