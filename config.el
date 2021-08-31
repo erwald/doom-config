@@ -156,7 +156,6 @@ I found this somewhere but cannot locate the source now."
 (map! "C-M-q" 'indent-pp-sexp) ; correctly indents sexp starting after cursor
 (map! "C-x C-a" 'ace-jump-mode) ; jump to char, line or word
 (map! "C-x C-M-a" 'ace-jump-mode-pop-mark) ; return to previous ace position
-(map! "C-i" 'other-window) ; select next window in cyclic ordering
 
 ;; lisp editing
 (map! :prefix "C-§"
@@ -170,7 +169,9 @@ I found this somewhere but cannot locate the source now."
        "s" 'sp-split-sexp
        "j" 'sp-join-sexp
        "w r" 'sp-wrap-round
-       "w c" 'sp-wrap-curly)
+       "w c" 'sp-wrap-curly
+       "w s" 'sp-wrap-square
+       "u" 'sp-unwrap-sexp)
 
 (defun erich/split-windows ()
   "Splits windows my way.
