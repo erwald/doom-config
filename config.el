@@ -28,6 +28,9 @@
 ;; => https://github.com/zzamboni/dot-doom/blob/master/doom.org
 (after! auth-source (setq auth-sources (nreverse auth-sources)))
 
+;; flycheck
+(setq flycheck-check-syntax-automatically '(save))
+
 ;; org
 (setq org-directory "~/org/")
 (map! "C-c C-g" 'org-forward-heading-same-level) ; C-c C-b is already back
