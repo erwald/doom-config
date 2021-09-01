@@ -146,6 +146,10 @@ I found this somewhere but cannot locate the source now."
 (+global-word-wrap-mode +1) ; turn on soft word wrap almost everywhere
 (after! which-key (setq which-key-idle-delay 0.1)) ; open popup more quickly
 
+;; windows
+(map! "M-o" 'ace-window)
+(after! ace-window (setq aw-keys '(?a ?r ?s ?t ?q ?w ?f ?p))) ; for colemak
+
 ;; associate some file extensions with modes
 (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tidal\\'" . haskell-mode))
