@@ -144,7 +144,7 @@ I found this somewhere but cannot locate the source now."
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ; start maximized
 (global-display-fill-column-indicator-mode) ; show fill col by default
 (+global-word-wrap-mode +1) ; turn on soft word wrap almost everywhere
-(after! which-key (setq which-key-idle-delay 0.1)) ; open popup more quickly
+(after! which-key (setq which-key-idle-delay 1)) ; open popup more quickly
 
 ;; windows
 (map! "M-o" 'ace-window)
