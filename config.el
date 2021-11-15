@@ -62,6 +62,37 @@
            (file "~/org/templates/monthly-review-template.org"))
           )))
 
+(require 'cl-lib)
+(require 'org-clock)
+(defun org-dblock-write:work-report (params)
+  "Calculate how many hours too many or too few I have worked.
+PARAMS are defined in the template, they are :tstart for the
+first day for which there's data (e.g. <2021-08-05>) and :tend
+for the last date (e.g. <now>)."
+  (cl-flet ((fmttm (tm) (format-time-string (org-time-stamp-format t t) tm)))
+    (let* ((fmt (or (plist-get params :format) "%d.%m.%Y"))
+           (file (or (plist-get params :file) (buffer-file-name)))
+           (start (seconds-to-time (org-matcher-time (plist-get params :tstart))))
+           (end (seconds-to-time (org-matcher-time (plist-get params :tend))))
+           (get-minutes (lambda (s e) (with-current-buffer (find-file-noselect file)
+                                        (second (org-clock-get-table-data
+                                                 file
+                                                 (list :maxlevel 0
+                                                       :tstart (fmttm s)
+                                                       :tend (fmttm e)))))))
+           (total-minutes-worked (funcall get-minutes start end))
+           (total-days-worked 0))
+      (progn
+        (while (time-less-p start end)
+          (let* ((next-day (time-add start (date-to-time "1970-01-02T00:00Z")))
+                 (minutes (funcall get-minutes start next-day)))
+            (if (> minutes 0) (cl-incf total-days-worked 1))
+            (setq start next-day)))
+        (let* ((hours-worked (/ total-minutes-worked 60.0))
+               (hours-should-work (* total-days-worked 8))
+               (difference (- hours-worked hours-should-work)))
+          (insert (format "%0.1f" difference)))))))
+
 (defun erich/org-to-clipboard-as-markdown ()
   "Export marked org text to Markdown and put it in clipboard.
 
