@@ -46,12 +46,6 @@
         '(("t" "Todo" entry
            (file+headline +org-capture-todo-file "Inbox")
            "* [ ] %?" :prepend t)
-          ("s" "Someday todo" entry
-           (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
-           "* SOMEDAY %?")
-          ("m" "Maybe todo" entry
-           (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
-           "* MAYBE %?")
           ("n" "Note" entry
            (file+headline +org-capture-notes-file "Inbox")
            "* %u %?\n%i" :prepend t)
@@ -66,36 +60,6 @@
           ("rm" "Monthly review" entry
            (file+headline "~/org/reviews.org" "Reviews")
            (file "~/org/templates/monthly-review-template.org"))
-
-          ;; Will use {project-root}/{todo,notes,changelog}.org, unless a
-          ;; {todo,notes,changelog}.org file is found in a parent directory.
-          ;; Uses the basename from `+org-capture-todo-file',
-          ;; `+org-capture-changelog-file' and `+org-capture-notes-file'.
-          ("p" "Templates for projects")
-          ("pt" "Project-local todo" entry  ; {project-root}/todo.org
-           (file+headline +org-capture-project-todo-file "Inbox")
-           "* TODO %?" :prepend t)
-          ("pn" "Project-local notes" entry  ; {project-root}/notes.org
-           (file+headline +org-capture-project-notes-file "Inbox")
-           "* %U %?" :prepend t)
-          ("pc" "Project-local changelog" entry  ; {project-root}/changelog.org
-           (file+headline +org-capture-project-changelog-file "Unreleased")
-           "* %U %?" :prepend t)
-
-          ;; Will use {org-directory}/{+org-capture-projects-file} and store
-          ;; these under {ProjectName}/{Tasks,Notes,Changelog} headings. They
-          ;; support `:parents' to specify what headings to put them under, e.g.
-          ;; :parents ("Projects")
-          ("o" "Centralized templates for projects")
-          ("ot" "Project todo" entry
-           (function +org-capture-central-project-todo-file)
-           "* TODO %?" :heading "Tasks" :prepend nil)
-          ("on" "Project notes" entry
-           (function +org-capture-central-project-notes-file)
-           "* %U %?" :heading "Notes" :prepend t)
-          ("oc" "Project changelog" entry
-           (function +org-capture-central-project-changelog-file)
-           "* %U %?" :heading "Changelog" :prepend t)
           )))
 
 (defun erich/org-to-clipboard-as-markdown ()
