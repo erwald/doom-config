@@ -141,6 +141,9 @@ I found this somewhere but cannot locate the source now."
 (+global-word-wrap-mode +1) ; turn on soft word wrap almost everywhere
 (after! which-key (setq which-key-idle-delay 1)) ; open popup more quickly
 
+;; shell
+(setq vterm-timer-delay 0.01)
+
 ;; windows
 (map! "M-o" 'ace-window)
 (after! ace-window (setq aw-keys '(?a ?r ?s ?t ?q ?w ?f ?p))) ; for colemak
