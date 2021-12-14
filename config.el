@@ -6,8 +6,8 @@
       user-mail-address "erichgrunewald@gmail.com")
 
 ;; theme
-(setq doom-font (font-spec :family "Apercu" :size 16 :weight 'normal))
-(setq doom-theme 'doom-homage-black)
+(setq doom-font (font-spec :family "IBM Plex Mono" :size 16 :weight 'normal))
+(setq doom-theme 'modus-vivendi)
 
 ;; modeline
 (setq doom-modeline-buffer-file-name-style 'truncate-except-project)
