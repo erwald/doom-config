@@ -76,7 +76,7 @@
            (file "~/org/templates/monthly-review-template.org"))
           )))
 
-(defun erich/org-to-clipboard-as-markdown ()
+(defun ehg/org-to-clipboard-as-markdown ()
   "Export marked org text to Markdown and put it in clipboard.
 
 I found this somewhere but cannot locate the source now."
@@ -155,7 +155,7 @@ I found this somewhere but cannot locate the source now."
        "w s" 'sp-wrap-square
        "u" 'sp-unwrap-sexp)
 
-(defun erich/split-windows ()
+(defun ehg/split-windows ()
   "Splits windows my way.
 => https://www.simplify.ba/articles/2016/01/25/display-buffer-alist/"
   (interactive)
@@ -185,7 +185,7 @@ I found this somewhere but cannot locate the source now."
 
 ;; editing
 
-(defun erich/snake-case ()
+(defun ehg/snake-case ()
   "Snake-case current region."
   (interactive)
   (if (use-region-p)
@@ -195,7 +195,7 @@ I found this somewhere but cannot locate the source now."
                (setq kill-ring-yank-pointer kill-ring)))
     (message "No region marked")))
 
-(defun erich/kebab-case ()
+(defun ehg/kebab-case ()
   "Kebab-case current region."
   (interactive)
   (if (use-region-p)
@@ -205,7 +205,7 @@ I found this somewhere but cannot locate the source now."
                (setq kill-ring-yank-pointer kill-ring)))
     (message "No region marked")))
 
-(defun erich/upper-camel-case ()
+(defun ehg/upper-camel-case ()
   "Upper-camel-case current region."
   (interactive)
   (if (use-region-p)
@@ -215,7 +215,7 @@ I found this somewhere but cannot locate the source now."
                (setq kill-ring-yank-pointer kill-ring)))
     (message "No region marked")))
 
-(defun erich/lower-camel-case ()
+(defun ehg/lower-camel-case ()
   "Lower-camel-case current region."
   (interactive)
   (if (use-region-p)
@@ -227,37 +227,41 @@ I found this somewhere but cannot locate the source now."
 
 ;; blog commands
 
-(defun erich/blog-post-create ()
-  "Creates a new empty blog post."
+(defun ehg/blog-post-create ()
+  "Create a new empty blog post."
   (interactive)
-  (let ((root-dir (projectile-project-root)))
-    (if (and root-dir (s-contains? "/blog/" root-dir))
-        (let ((title (read-string "Post title: "))
-              (date (read-string "Date (yyyy-mm-dd): ")))
-          (let ((file-path
-                 (concat root-dir "posts/"
-                         (s-dashed-words
-                          (s-replace-regexp "[[:nonascii:]]" ""
-                                            (s-replace "'" "" title)))
-                         ".md")))
-            (progn (write-region (concat
-                                  "---\n"
-                                  "layout: layouts/post.njk\n"
-                                  "title: " title "\n"
-                                  "date: " date "\n"
-                                  "tags: post\n"
-                                  "---\n")
-                                 nil
-                                 file-path)
-                   (find-file file-path)
-                   (goto-char (point-min))
-                   (message "Done!"))))
-      (message "Not in /blog directory."))))
+  (let ((title (read-string "Post title: "))
+        (date (read-string "Date (yyyy-mm-dd): ")))
+    (ehg/blog-post-create-with-content title date "")))
 
+(defun ehg/blog-post-create-with-content (title date content)
+  "Create a new blog post with TITLE, DATE and CONTENT."
+  (let* ((root-dir (--first (s-contains? "blog" it) projectile-known-projects))
+         (kebab-title (s-dashed-words (s-replace-regexp "[[:nonascii:]]" "" (s-replace "'" "" title))))
+         (filepath (concat root-dir "posts/" kebab-title))
+         (header (concat "---\n"
+                         "layout: layouts/post.njk\n"
+                         "title: " title "\n"
+                         "date: " date "\n"
+                         "tags: post\n"
+                         "---\n")))
+    (progn (write-region (concat header content) nil filepath)
+           (find-file filepath)
+           (ehg/blog-post-fix-urls)
+           (goto-char (point-min))
+           (message "Done!"))))
 
-(defun erich/blog-post-fix-urls ()
-  "Fixes all URLs, both to the blog itself & to images (points them to the /img
-dir) in a blog post."
+(defun ehg/blog-post-create-from-org-buffer ()
+  "Create a new blog post from content of current `org-mode' buffer."
+  (interactive)
+  (with-current-buffer buffer
+    (let* ((title (read-string "Post title: ")) ; TODO: get title from content
+           (date (read-string "Date (yyyy-mm-dd): "))
+           (content buffer)) ; TODO: convert content to markdown
+      (ehg/blog-post-create-with-content title date content))))
+
+(defun ehg/blog-post-fix-urls ()
+  "Fixe all URLs, both to the blog itself & to images (points them to the /img dir) in a blog post."
   (interactive)
   (progn
     (goto-char (point-min))
