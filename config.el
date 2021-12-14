@@ -167,7 +167,30 @@ I found this somewhere but cannot locate the source now."
 (map! "C-c C-r C-f" 'rotate-text)
 (map! "C-c C-r C-b" 'rotate-text-backward)
 
-;; expand region helpers
+;; lisp editing
+(map! :prefix "C-§"
+      "k" 'sp-kill-sexp
+      "b f" 'sp-forward-barf-sexp
+      "b b" 'sp-backward-barf-sexp
+      "s f" 'sp-forward-slurp-sexp
+      "s b" 'sp-backward-slurp-sexp
+      "r" 'sp-raise-sexp
+      "c" 'sp-convolute-sexp
+      "s" 'sp-split-sexp
+      "j" 'sp-join-sexp
+      "w r" 'sp-wrap-round
+      "w c" 'sp-wrap-curly
+      "w s" 'sp-wrap-square
+      "u" 'sp-unwrap-sexp)
+
+;; configure expand region
+(use-package! expand-region
+  :commands (er/expand-region er/contract-region er/mark-defun
+  er/mark-symbol er/mark-next-accessor er/mark-method-call
+  er/mark-word er/mark-sentence er/mark-paragraph er/mark-url
+  er/mark-email er/mark-python-block
+  er/mark-python-block-and-decorator er/mark-python-statement
+  er/mark-outsid-python-string er/mark-outer-python-block))
 (map! :prefix "C-c x"
       "f" 'er/mark-defun
       "v" 'er/mark-symbol
@@ -184,22 +207,6 @@ I found this somewhere but cannot locate the source now."
       "y e" 'er/mark-python-statement
       "y s" 'er/mark-outside-python-string
       "y o" 'er/mark-outer-python-block)
-
-;; lisp editing
-(map! :prefix "C-§"
-      "k" 'sp-kill-sexp
-      "b f" 'sp-forward-barf-sexp
-      "b b" 'sp-backward-barf-sexp
-      "s f" 'sp-forward-slurp-sexp
-      "s b" 'sp-backward-slurp-sexp
-      "r" 'sp-raise-sexp
-      "c" 'sp-convolute-sexp
-      "s" 'sp-split-sexp
-      "j" 'sp-join-sexp
-      "w r" 'sp-wrap-round
-      "w c" 'sp-wrap-curly
-      "w s" 'sp-wrap-square
-      "u" 'sp-unwrap-sexp)
 
 (defun ehg/split-windows ()
   "Splits windows my way.
