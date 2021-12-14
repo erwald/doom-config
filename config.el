@@ -132,14 +132,12 @@ I found this somewhere but cannot locate the source now."
 (map! :desc "Show the Poetry menu." "C-c y" 'poetry)
 
 ;; editor
-(setq-default delete-by-moving-to-trash t
-              fill-column 120)
-(setq display-line-numbers-type t
-      scroll-margin 2)
+(setq-default delete-by-moving-to-trash t fill-column 120)
+(setq display-line-numbers-type t scroll-margin 2)
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ; start maximized
 (global-display-fill-column-indicator-mode) ; show fill col by default
 (+global-word-wrap-mode +1) ; turn on soft word wrap almost everywhere
-(after! which-key (setq which-key-idle-delay 1)) ; open popup more quickly
+(after! which-key (setq which-key-idle-delay 0.5)) ; open popup more quickly
 
 ;; shell
 (setq vterm-timer-delay 0.01)
@@ -158,23 +156,43 @@ I found this somewhere but cannot locate the source now."
 (map! "C-c C-w" 'fixup-whitespace) ; removes extra whitespace around cursor
 (map! "C-M-q" 'indent-pp-sexp) ; correctly indents sexp starting after cursor
 (map! "C-x C-a" 'ace-jump-mode) ; jump to char, line or word
-(map! "C-x C-M-a" 'ace-jump-mode-pop-mark) ; return to previous ace position
+(map! "C-x C-S-a" 'ace-jump-mode-pop-mark) ; return to previous ace position
+(map! "C-c C-r C-f" 'rotate-text)
+(map! "C-c C-r C-b" 'rotate-text-backward)
+
+;; expand region helpers
+(map! :prefix "C-c x"
+      "f" 'er/mark-defun
+      "v" 'er/mark-symbol
+      "m" 'er/mark-next-accessor
+      "c" 'er/mark-method-call
+      "/" 'er/mark-comment
+      "w" 'er/mark-word
+      "s" 'er/mark-sentence
+      "p" 'er/mark-paragraph
+      "u" 'er/mark-url
+      "e" 'er/mark-email
+      "y b" 'er/mark-python-block
+      "y d" 'er/mark-python-block-and-decorator
+      "y e" 'er/mark-python-statement
+      "y s" 'er/mark-outside-python-string
+      "y o" 'er/mark-outer-python-block)
 
 ;; lisp editing
 (map! :prefix "C-§"
-       "k" 'sp-kill-sexp
-       "b f" 'sp-forward-barf-sexp
-       "b b" 'sp-backward-barf-sexp
-       "s f" 'sp-forward-slurp-sexp
-       "s b" 'sp-backward-slurp-sexp
-       "r" 'sp-raise-sexp
-       "c" 'sp-convolute-sexp
-       "s" 'sp-split-sexp
-       "j" 'sp-join-sexp
-       "w r" 'sp-wrap-round
-       "w c" 'sp-wrap-curly
-       "w s" 'sp-wrap-square
-       "u" 'sp-unwrap-sexp)
+      "k" 'sp-kill-sexp
+      "b f" 'sp-forward-barf-sexp
+      "b b" 'sp-backward-barf-sexp
+      "s f" 'sp-forward-slurp-sexp
+      "s b" 'sp-backward-slurp-sexp
+      "r" 'sp-raise-sexp
+      "c" 'sp-convolute-sexp
+      "s" 'sp-split-sexp
+      "j" 'sp-join-sexp
+      "w r" 'sp-wrap-round
+      "w c" 'sp-wrap-curly
+      "w s" 'sp-wrap-square
+      "u" 'sp-unwrap-sexp)
 
 (defun erich/split-windows ()
   "Splits windows my way.
