@@ -94,9 +94,8 @@ I found this somewhere but cannot locate the source now."
 (setq +org-roam-open-buffer-on-find-file nil)
 
 ;; projectile
-(setq projectile-project-search-path
-      (append (cdddr (directory-files "~/Documents/projects/programming" t))
-              (cdddr (directory-files "~/Documents/projects" t))))
+(setq projectile-project-search-path '(("~/Documents/projects/programming/" . 1)
+                                       ("~/Documents/projects/" . 1)))
 (setq projectile-globally-ignored-file-suffixes
       '(".png" ".jpg" ".gif" ".pdf" ".ipynb"))
 
