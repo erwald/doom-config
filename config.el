@@ -44,7 +44,7 @@
 (map! "C-c C-g" 'org-forward-heading-same-level) ; C-c C-b is already back
 (map! "C-c C-x l" '+org/close-all-folds)
 (map! "C-c C-x L" '+org/open-all-folds)
-(setq company-global-modes '(not org-mode)) ; disable word completion
+(setq company-global-modes '(not org-mode eshell-mode)) ; disable word completion
 (setq org-journal-date-prefix "#+TITLE: "
       org-journal-time-prefix "* "
       org-journal-date-format "%a, %Y-%m-%d"
