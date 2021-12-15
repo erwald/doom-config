@@ -11,7 +11,6 @@
 
 (package! ace-jump-mode) ; moves the cursor around the screen
 (package! poetry) ; python poetry
-(package! geiser-mit :pin "96845db8") ; doom has bad sha
 (package! mu4e-alert :disable t)
 
 ;; To install a package directly from a remote git repo, you must specify a
