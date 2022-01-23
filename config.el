@@ -268,6 +268,47 @@ for the last date (e.g. <now>)."
                (setq kill-ring-yank-pointer kill-ring)))
     (message "No region marked")))
 
+(defun ehg/org-to-markdown ()
+  "Convert the contents of the current `org-mode' buffer to markdown and export to clipboard."
+  (interactive)
+  (progn
+    (org-md-export-as-markdown)
+    (let* ((s (buffer-substring-no-properties (point-min) (point-max)))
+           (lines (-drop-while (lambda (line) (or (not (s-starts-with? "# " line))
+                                                  (s-equals? "# Table of Contents" line)))
+                               (s-lines s)))
+           (s (s-join "\n" lines))
+           ;; convert escaped characters to ascii/unicode.
+           (s (s-replace-all '(("&lsquo;" . "'")
+                               ("&rsquo;" . "'")
+                               ("&ldquo;" . "\"")
+                               ("&rdquo;" . "\"")
+                               ("&#x2013;" . "–"))
+                             s))
+           (s (replace-regexp-in-string "<a id=\"org[^>]*></a>" "" s))
+           ;; fix double spaces after list bullets.
+           (s (replace-regexp-in-string "\\(-\\|[[:digit:]]+\.\\)[[:blank:]]\\{2,\\}" "\\1 " s))
+           ;; fix footnotes in text.
+           (s (replace-regexp-in-string "<sup>[^>]*footref[^>]*>\\([[:digit:]]+\\)</a></sup>" "[^\\1]" s))
+           ;; fix footnotes after text.
+           (s (replace-regexp-in-string "<sup>[^>]*>\\([[:digit:]]+\\)</a></sup>" "[^\\1]:\t" s))
+           ;; NOTE: multiline footnotes need tab indentation to be detected as such.
+           (footnote-split (-split-on "# Footnotes" (s-lines s)))
+           (footnote-lines (-map (lambda (line) (if (or (s-equals? "" line) (s-starts-with? "[" line))
+                                                    line
+                                                  (concat "\t" line)))
+                                 (cl-second footnote-split)))
+           (s (s-join "\n" (-concat (cl-first footnote-split) footnote-lines)))
+           ;; compress multiple consecutive line breaks.
+           (s (replace-regexp-in-string "\n\\{3,\\}" "\n\n" s))
+           ;; remove leading/trailing whitespace.
+           (s (s-trim s)))
+      (progn
+        ;; make sure we took care of all escaped characters.
+        (cl-assert (not (s-match "&[[:alnum:]]\\{3,6\\};" s)))
+        (kill-new s)
+        (kill-buffer (current-buffer))))))
+
 ;; blog commands
 
 (defun ehg/blog-post-create ()
