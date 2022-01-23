@@ -290,8 +290,8 @@ I found this somewhere but cannot locate the source now."
 (defun ehg/blog-post-create-with-content (title date content)
   "Create a new blog post with TITLE, DATE and CONTENT."
   (let* ((root-dir (--first (s-contains? "blog" it) projectile-known-projects))
-         (kebab-title (s-dashed-words (s-replace-regexp "[[:nonascii:]]" "" (s-replace "'" "" title))))
-         (filepath (concat root-dir "posts/" kebab-title))
+         (kebab-title (s-dashed-words (s-replace-regexp "\\([[:nonascii:]]\\|'\\)" "" title)))
+         (filepath (concat root-dir "posts/" kebab-title ".md"))
          (header (concat "---\n"
                          "layout: layouts/post.njk\n"
                          "title: " title "\n"
